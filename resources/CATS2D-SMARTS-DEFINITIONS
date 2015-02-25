@@ -1,0 +1,19 @@
+# CATS2D  Potential Pharmacophore Point (PPP) definitions as describes in
+# Pharmacophores and Pharmacophore Searches 2006 (Eds. T. Langer and R.D. Hoffmann), Chapter 3:
+# Alignment-free Pharmacophore Patterns - A Correlattion-vector Approach.
+# The last lipophilic pattern on page 55 of the book is realized as a graph search and not
+# as a SMARTS search. Therefore, the list contains only two lipophilic SMARTS patterns.
+# The format is tab separated and contains in the first column the PPP type (D = H-bond donor,
+# A = H-bond acceptor, P = positive, N = negative, L = lipophilic). The second column of each entry
+# contains the SMARTS pattern(s). The last entry is a description of the molecular feature
+
+D	[OH]	Oxygen atom of an OH group
+D	[#7H,#7H2]	Nitrogen atom of an NH or NH2 group
+A	[O]	Oxygen atom
+A	[#7H0]	Nitrogen atom not adjacent to a hydrogen atom
+P	[*+]	atom with a positive charge
+P	[#7H2]	Nitrogen atom of an NH2 group
+N	[*-]	Atom with a negative charge
+#N	[C&$(C(=O)#8H1),P&$(P(=O)O),S&$(S(=O)O)]	Carbon, sulfur or phosphorus atom of a COOH, SOOH or POOH group. This pattern is realized by an graph algorithm
+L	[Cl,Br,I]	Chlorine, bromine, or iodine atom
+L	[S;D2;$(S(C)(C))]	Sulfur atom adjacent to exactly two carbon atoms
