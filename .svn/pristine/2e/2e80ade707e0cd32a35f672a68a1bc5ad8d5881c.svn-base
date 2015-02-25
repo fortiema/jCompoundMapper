@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<project name="de.zbit.jcmapper" default="all" basedir="."> 
+
+    <property name="src.dir" value="src"/> 
+    <property name="build.dir" value="bin"/>
+	<property name="test.dir" value="tests"/>
+	<property name="classes.dir" value="${build.dir}/classes"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="resource.dir" value="resources"/>
+	
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+	</path>
+	
+    <target name="init">  
+     	<echo>Creating build dir: ${build.dir}</echo>
+        <mkdir dir="${build.dir}"/>
+     	<echo>Creating classes dir: ${build.dir}</echo>
+     	<mkdir dir="${classes.dir}"/>
+    </target>
+	
+	<target name="all" depends="compile,libjar,clijar" description="Builds both executable jar and lib jar"/>
+	
+	<target name="clean" description="Removes previous build">
+		<echo>Deleting ${build.dir}</echo>
+		<delete verbose="true" includeEmptyDirs="true">
+	  		<fileset dir="${classes.dir}"/>
+	    	<fileset dir="${build.dir}"/>
+		</delete>
+	</target>
+	
+	<target name="libjar" depends="compile" description="compile and build lib jar">
+		<echo>Building LibOnly jar file</echo>
+		<jar destfile="${build.dir}/jCMapperLibOnly.jar">
+		    <fileset dir="${classes.dir}"/>
+			<manifest>
+				<attribute name="Main-Class" value="de.zbit.jcmapper.executable.jCMapper"/>
+			</manifest>
+			<fileset dir=".">
+				<include name="${resource.dir}/CATS2D-SMARTS-DEFINITIONS"/>
+				<include name="${resource.dir}/MACCS166-SMARTS-DEFINITIONS"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="clijar" depends="compile" description="compile and build executable jar">
+		<echo>Building executable jar (this may take a while)</echo>
+		<jar destfile="${build.dir}/jCMapperCLI.jar">
+		    <fileset dir="${classes.dir}"/>
+			<fileset dir=".">
+				<include name="${resource.dir}/CATS2D-SMARTS-DEFINITIONS"/>
+				<include name="${resource.dir}/MACCS166-SMARTS-DEFINITIONS"/>
+			</fileset>
+			<archives>
+				<zips>
+					<fileset dir="${lib.dir}" includes="**/*.jar"/>
+				</zips>
+			</archives>
+		    <manifest>
+		    	<attribute name="Main-Class" value="de.zbit.jcmapper.executable.jCMapper"/>
+			</manifest>
+			
+		</jar>
+		
+	</target>
+	
+	<target name="compile" depends="init" description="compile the source">
+		<echo>Compiling sources</echo>
+    	<javac srcdir="${src.dir}" destdir="${classes.dir}">
+     		<classpath refid="classpath"/>
+     	</javac>
+    </target>
+	
+</project>
